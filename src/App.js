@@ -1,26 +1,56 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import teams from './teams';
+import Sports from './Sports';
+import TeamList from './TeamList';
+import PlayerList from './PlayerList'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sports: '',
+      teams: ''
+    }
+  }
+  render() {
+    return (
+      <div className="App">
+        <Sports 
+          sports={Object.keys(teams)}
+          handleClick={this._setSport}
+          />
+
+        {
+          this.state.sports ? <TeamList
+                                    teams={Object.keys(teams[this.state.sports])}
+                                    handleClick={this._setTeam}
+                              />
+                              :null
+        }
+        {
+          this.state.teams ? <PlayerList 
+                                  players={teams[this.state.sports][this.state.teams]}
+                              />
+                              : null
+        }
+      </div>
+    );
+  }
+  
+  _setSport = (sports) => {
+    this.setState({
+      sports,
+      teams: ''
+    });
+
+  }
+  _setTeam = (teams) => {
+    this.setState({
+      teams
+    })
+  }
 }
 
 export default App;
